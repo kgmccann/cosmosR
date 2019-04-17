@@ -6,13 +6,15 @@
 #' @param debug.auth Logical value for getting verbose output of auth header being constructed. Defaults to false.
 #' @param debug.query Logical value for getting verbose output of HTTP response, printing all headers. Defaults to false.
 #' @param content.response Logical value to determine whether to retrieve full response or just the documents
+#' @param asc Logical, where true returns the data in ascending order by sql.orderby. Defaults to True.
 #' @return Prints status code of HTTP POST, and returns full HTTP response or just the content
 #' @keywords query cosmosdb post
 #' @export
 #' @examples
 #' cosmosQuery(sql.what = "c.contact.eloquaId", sql.where = "c.contact.eloquaId != null")
 
-cosmosQuery <- function(sql.what = "*", sql.where = "",sql.orderby = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE) {
+cosmosQuery <- function(sql.what = "*", sql.where = "",sql.orderby = "", 
+                        max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE,asc=T) {
 
     require(digest)
     require(base64enc)
@@ -34,7 +36,7 @@ cosmosQuery <- function(sql.what = "*", sql.where = "",sql.orderby = "", max.ite
     res.type <- "docs"
 
     # Create full query with function
-    full.query <- constructQuery(sql.what, sql.where, sql.orderby)
+    full.query <- constructQuery(sql.what, sql.where, sql.orderby,asc)
 
     # Convert full query to JSON for HTTP POST
     json.query <- toJSON(list(query = full.query, parameters = list()))
