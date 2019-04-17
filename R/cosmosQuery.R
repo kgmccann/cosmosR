@@ -2,6 +2,7 @@
 #' 
 #' @param sql.what String for specifying what fields to retrieve. Typically called select condition. Defaults to *
 #' @param sql.where String for specifying what filter to use on data. Typically called search condition. Defaults to empty.
+#' @param sql.orderby String for specifying what field to order query by. Defaults to empty.
 #' @param debug.auth Logical value for getting verbose output of auth header being constructed. Defaults to false.
 #' @param debug.query Logical value for getting verbose output of HTTP response, printing all headers. Defaults to false.
 #' @param content.response Logical value to determine whether to retrieve full response or just the documents
@@ -11,7 +12,7 @@
 #' @examples
 #' cosmosQuery(sql.what = "c.contact.eloquaId", sql.where = "c.contact.eloquaId != null")
 
-cosmosQuery <- function(sql.what = "*", sql.where = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE) {
+cosmosQuery <- function(sql.what = "*", sql.where = "",sql.orderby = "", max.items = 100, debug.auth = FALSE, debug.query = FALSE, content.response = FALSE) {
 
     require(digest)
     require(base64enc)
@@ -33,7 +34,7 @@ cosmosQuery <- function(sql.what = "*", sql.where = "", max.items = 100, debug.a
     res.type <- "docs"
 
     # Create full query with function
-    full.query <- constructQuery(sql.what, sql.where)
+    full.query <- constructQuery(sql.what, sql.where, sql.orderby)
 
     # Convert full query to JSON for HTTP POST
     json.query <- toJSON(list(query = full.query, parameters = list()))
