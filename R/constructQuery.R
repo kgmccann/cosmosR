@@ -24,7 +24,7 @@ constructQuery <- function(sql.what, sql.where, sql.orderby, asc) {
     } else if(sql.where == ""){
             full.query <- paste("SELECT ", sql.what, " FROM c ORDER BY (",sql.orderby , ")", sql.rank,sep = "")   
     } else{
-        full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")"," ORDER BY (",sql.orderby , ")", sql.rank,sep = "")
+        full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")"," ORDER BY (",sql.orderby , ") ", sql.rank,sep = "")
     }
 
     # Return the query
