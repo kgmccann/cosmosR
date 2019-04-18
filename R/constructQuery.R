@@ -10,23 +10,26 @@
 #' @examples
 #' constructQuery(sql.what = "c.contact.eloquaId", sql.where = "c.contact.eloquaId != null")
 
-constructQuery <- function(sql.what, sql.where, sql.orderby, asc) {
-    if(!asc){
-        sql.rank <- 'DESC'
-    } else{
-        sql.rank <- 'ASC'
-    }
-    # Create the query using predicate if it exists
-    if (sql.where == "" & sql.orderby == "") {
-        full.query <- paste("SELECT", sql.what, "FROM c", sep = " ")
-    } else if(sql.orderby == ""){
-        full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")", sep = "")
-    } else if(sql.where == ""){
-            full.query <- paste("SELECT ", sql.what, " FROM c ORDER BY (",sql.orderby , ")", sql.rank,sep = "")   
-    } else{
-        full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")"," ORDER BY (",sql.orderby , ") ", sql.rank,sep = "")
-    }
-
-    # Return the query
-    full.query
+constructQuery <- function(sql.what, sql.where, sql.orderby, asc,max.items) {
+  if(!asc){
+    sql.rank <- 'DESC'
+  } else{
+    sql.rank <- 'ASC'
+  }
+  # Create the query using predicate if it exists
+  if (sql.where == "" & sql.orderby == "") {
+    full.query <- paste("SELECT", sql.what, "FROM c", sep = " ")
+  } else if(sql.orderby == ""){
+    full.query <- paste("SELECT ", sql.what, " FROM c WHERE ", sql.where, sep = "")
+    #full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")", sep = "")
+  } else if(sql.where == ""){
+    full.query <- paste("SELECT TOP ",max.items, ' ', sql.what, " FROM c ORDER BY c.",sql.orderby , " ", sql.rank, sep = "")   
+    #full.query <- paste("SELECT ", sql.what, " FROM c ORDER BY (c.",sql.orderby , ") ", sql.rank, sep = "")   
+  } else{
+    #full.query <- paste("SELECT ", sql.what, " FROM c WHERE (", sql.where, ")"," ORDER BY (c.",sql.orderby , ") ", sql.rank ,sep = "")
+    full.query <- paste("SELECT TOP ",max.items, ' ', sql.what, " FROM c WHERE ", sql.where, " ORDER BY c.",sql.orderby , " ", sql.rank ,sep = "")
+  }
+  
+  # Return the query
+  full.query
 }
